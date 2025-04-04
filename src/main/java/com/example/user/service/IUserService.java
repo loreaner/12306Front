@@ -8,5 +8,6 @@ import com.example.user.util.ResponseResult;
 public interface IUserService extends IService<User> {
     public ResponseResult login(String username, String password);
     public ResponseResult register(User user);
+    public ResponseResult selectByName(String username);
 
 }

@@ -27,4 +27,9 @@ public class UserController {
         System.out.println(user);
         return userService.register(user);
     }
+
+    @GetMapping("info")
+    public ResponseResult selectByName(@RequestParam("username") String username) {
+        return userService.selectByName(username);
+    }
 }

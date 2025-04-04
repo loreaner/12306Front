@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.example.user.dto.UserUploadDto;
 import com.example.user.entity.User;
 import com.example.user.mapper.UserMapper;
 
@@ -37,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         return ResponseResult.error("登录失败");
     }
-
+   @Override
     public ResponseResult register(User user) {
         // 校验用户名是否为空
         if (user.getUsername() == null || user.getUsername().isEmpty()) {
@@ -68,7 +69,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (user.getEmail() != null && !Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", user.getEmail())) {
             return ResponseResult.error("邮箱格式不正确");
         }
-
         // 检查用户名是否已存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", user.getUsername());
@@ -95,5 +95,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return ResponseResult.success("注册成功");
         }
         return ResponseResult.error("注册失败");
+    }
+    @Override
+    public ResponseResult selectByName(String username) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user != null) {
+            UserUploadDto userUploadDto = new UserUploadDto();
+            userUploadDto.setId(user.getId());
+            userUploadDto.setUsername(user.getUsername());
+            userUploadDto.setRealName(user.getRealName());
+            userUploadDto.setIdCard(user.getIdCard());
+            userUploadDto.setPhone(user.getPhone());
+            userUploadDto.setEmail(user.getEmail());
+            userUploadDto.setIsVerified(user.getIsVerified());
+
+            return ResponseResult.success("用户名已存在", userUploadDto);
+        }
+        return ResponseResult.error("用户名不存在");
     }
 }
