@@ -54,8 +54,10 @@ const filteredTrains = computed(() => {
 
 .train-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
+  overflow-x: auto; /* 添加水平滚动条 */
+  white-space: nowrap; /* 防止子元素换行 */
 }
 
 .train-item {
@@ -63,6 +65,6 @@ const filteredTrains = computed(() => {
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
+  flex: 0 0 auto; /* 防止子元素收缩 */
 }
-
 </style>
