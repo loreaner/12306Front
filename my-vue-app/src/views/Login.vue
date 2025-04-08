@@ -45,7 +45,7 @@ const handleSubmit = async () => {
     params.append('username', form.value.username);
     params.append('password', form.value.password);
 
-    const response = await axios.post('http://localhost:8080/user/login', params, {
+    const response = await axios.post('/user/login', params, { // 修改 URL
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }

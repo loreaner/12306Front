@@ -192,7 +192,7 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    const response = await axios.post('http://localhost:8080/user/register', {
+    const response = await axios.post('/user/register', { // 修改 URL
       username: form.value.username,
       passwordHash: form.value.password, // 假设密码直接发送，实际应用中应加密
       realName: form.value.realName,

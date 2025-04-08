@@ -19,10 +19,10 @@ export default defineConfig({
     port: 5173,      // 指定端口（默认是 5173）
     strictPort: true, // 如果端口被占用直接报错
     proxy: {
-      '/user': {
+      '/api': {
         target: 'http://118.145.189.4', // 代理目标地址
         changeOrigin: true, // 允许跨域
-        rewrite: (path) => path.replace(/^\/user/, '') // 重写路径
+        rewrite: (path) => path.replace(/^\/api/, '') // 重写路径
       }
     }
   }
