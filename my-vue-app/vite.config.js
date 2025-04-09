@@ -20,9 +20,8 @@ export default defineConfig({
     strictPort: true, // 如果端口被占用直接报错
     proxy: {
       '/user': {
-        target: 'http://118.145.189.4', // 代理目标地址
+        target: 'http://118.145.189.4:8080', // 修改后的代理目标地址
         changeOrigin: true, // 允许跨域
-        rewrite: (path) => path.replace(/^\/user/, '') // 重写路径
       }
     }
   }
