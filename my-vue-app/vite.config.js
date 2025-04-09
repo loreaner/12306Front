@@ -1,3 +1,4 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -18,11 +19,5 @@ export default defineConfig({
     host: '0.0.0.0', // 监听所有 IP（包括局域网）
     port: 5173,      // 指定端口（默认是 5173）
     strictPort: true, // 如果端口被占用直接报错
-    proxy: {
-      '/user': {
-        target: 'http://118.145.189.4:8080', // 修改后的代理目标地址
-        changeOrigin: true, // 允许跨域
-      }
-    }
-  }
+  },
 })
