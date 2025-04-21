@@ -1,17 +1,15 @@
 <script setup>
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './Home.vue';
-import Order from './Order.vue';
-import Search from './Search.vue';
 import Passenger from '../components/commonInfo/passenger.vue';
 import Person from '../components/commonInfo/person.vue';
+import Ticket from '../components/ticket/ticket.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/siber', component: Home },
-    { path: '/siber/order', component: Order },
-    { path: '/siber/search', component: Search },
+    { path: '/siber/ticket', component: Ticket }, // 添加: 替换为 Ticket 组件
     { path: '/siber/passenger', component: Passenger },
     { path: '/siber/person', component: Person }
   ]
@@ -23,8 +21,7 @@ const router = createRouter({
     <nav class="sidebar">
       <ul>
         <li><router-link to="/siber">Home</router-link></li>
-        <li><router-link to="/siber/order">Order</router-link></li>
-        <li><router-link to="/siber/search">Search</router-link></li>
+        <li><router-link to="/siber/ticket">Ticket</router-link></li>
         <li><router-link to="/siber/passenger">Passenger</router-link></li>
         <li><router-link to="/siber/person">Person</router-link></li>
       </ul>

@@ -30,8 +30,8 @@ const maskPhone = (phone) => {
 // 从后端获取用户信息
 const loadData = async () => {
   try {
-    const username = localStorage.getItem('username') // 假设登录时存储了用户名
-    const response = await axios.get('/user/info', { // 修改 URL
+    const username = localStorage.getItem('userName') // 假设登录时存储了用户名
+    const response = await axios.get('http://localhost:8080/user/info', { // 修改 URL，添加 http:// 协议
       params: { username }
     })
     console.log(response.data.data) // 打印后端返回的数据

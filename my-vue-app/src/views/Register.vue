@@ -193,7 +193,7 @@ const handleSubmit = async () => {
 
   try {
     // 修改 URL 为完整的后端服务地址
-    const response = await axios.post('http://118.145.189.4:8080/user/register', {
+    const response = await axios.post('http://localhost:8080/user/register', {
       username: form.value.username,
       passwordHash: form.value.password, // 假设密码直接发送，实际应用中应加密
       realName: form.value.realName,

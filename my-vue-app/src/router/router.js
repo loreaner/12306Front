@@ -3,23 +3,22 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Siber from '../views/Siber.vue';
 import Home from '../views/Home.vue';
-import Order from '../views/Order.vue';
-import Search from '../views/Search.vue';
+import Ticket from '../components/ticket/Ticket.vue'; // 确认路径正确
 import Passenger from '../components/commonInfo/passenger.vue';
 import Person from '../components/commonInfo/person.vue';
 
 const routes = [
   { path: '/', component: Login },
   { path: '/register', component: Register },
-  { 
-    path: '/siber', 
+  {
+    path: '/siber',
     component: Siber,
     children: [
       { path: '', component: Home },
-      { path: 'order', component: Order },
-      { path: 'search', component: Search },
+      { path: 'ticket', component: Ticket },
       { path: 'passenger', component: Passenger },
-      { path: 'person', component: Person }
+      { path: 'person', component: Person },
+      { path: 'buy-ticket', component: () => import('../components/ticket/buyTicket.vue') }
     ]
   }
 ];

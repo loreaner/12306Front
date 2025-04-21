@@ -46,7 +46,7 @@ const handleSubmit = async () => {
     params.append('password', form.value.password);
 
     // 修改 URL 为完整的后端服务地址
-    const response = await axios.post('http://118.145.189.4:8080/user/login', params, {
+    const response = await axios.post('http://localhost:8080/user/login', params, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
@@ -54,7 +54,7 @@ const handleSubmit = async () => {
 
     if (response.data) {
       alert("登录成功");
-      localStorage.setItem('username', form.value.username); // 存储用户名
+      localStorage.setItem('userName', form.value.username); // 存储用户名
       await router.push('/siber'); // 跳转到 Siber.vue
     } else {
       alert("登录失败");
