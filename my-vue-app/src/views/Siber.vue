@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from './Home.vue';
 import Passenger from '../components/commonInfo/passenger.vue';
 import Person from '../components/commonInfo/person.vue';
-import Ticket from '../components/ticket/ticket.vue'
+import Ticket from '../components/ticket/selectTicket.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -24,6 +24,7 @@ const router = createRouter({
         <li><router-link to="/siber/ticket">Ticket</router-link></li>
         <li><router-link to="/siber/passenger">Passenger</router-link></li>
         <li><router-link to="/siber/person">Person</router-link></li>
+        <li><router-link to="/siber/order">Order</router-link></li> <!-- 确保已存在 -->
       </ul>
     </nav>
     <router-view class="content"></router-view>

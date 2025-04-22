@@ -33,6 +33,29 @@ const selectedArrivalStation = ref('');
 // 车次席别筛选
 const selectedSeatType = ref('');
 
+// 新增筛选逻辑
+const handleFilter = async () => {
+  try {
+    const response = await axios.get('http://localhost:8081/ticket', {
+      params: {
+        date: selectedDate.value,
+        trainType: selectedTrainType.value,
+        departureStation: selectedDepartureStation.value,
+        arrivalStation: selectedArrivalStation.value,
+        seatType: selectedSeatType.value
+      }
+    });
+
+    if (response.data && response.data.code === 200) {
+      trainData.value = response.data.data;
+    } else {
+      console.error('Failed to fetch filtered tickets:', response.data.msg);
+    }
+  } catch (error) {
+    console.error('Failed to fetch filtered tickets:', error);
+  }
+};
+
 // 发送选择到后端
 const sendSelection = async (type, value) => {
   try {
@@ -55,7 +78,9 @@ const navigateToBuyTicket = (row) => {
       trainNo: row.trainNo,
       startStation: row.startStation,
       endStation: row.endStation,
-      // 添加其他需要传递的信息
+      departureTime: row.departureTime, // 新增：出发时间
+      arrivalTime: row.arrivalTime,     // 新增：到达时间
+      seats: JSON.stringify(row.seats)  // 新增：座位信息（需序列化）
     }
   });
 };
@@ -102,7 +127,7 @@ const navigateToBuyTicket = (row) => {
     </div>
 
     <!-- 筛选按钮 -->
-    <button @click="filterTickets">筛选</button>
+    <button @click="handleFilter">筛选</button>
 
     <!-- 表格展示车次信息 -->
     <el-table :data="trainData" style="width: 100%" v-if="trainData">
