@@ -4,7 +4,8 @@
     <el-skeleton v-if="loading" :rows="5" animated />
     <el-button type="primary" @click="handleAddClick" style="margin-bottom: 20px;">添加乘客</el-button>
     <el-table v-if="!loading" :data="passengers" style="width: 100%" stripe>
-      <el-table-column prop="id" label="序号" width="80" />
+      <!-- 修改：使用 type="index" 显示行序号 -->
+      <el-table-column type="index" label="序号" width="80" />
       <el-table-column prop="name" label="姓名" width="120" />
       <el-table-column prop="idType" label="证件类型" width="150" />
       <el-table-column prop="idNumber" label="证件号码" width="200" />
@@ -85,6 +86,9 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
+// 从 localStorage 获取 userName
+const userName = localStorage.getItem('userName');
+
 const passengers = ref([]);
 const loading = ref(true);
 
@@ -94,7 +98,9 @@ const addPassengerForm = ref({
   name: '',
   idType: '身份证',
   idNumber: '',
-  phone: ''
+  phone: '',
+  // 确保 userName 字段正确初始化
+  userName: userName // 从 localStorage 获取的 userName
 });
 
 // 编辑乘客表单
@@ -104,11 +110,10 @@ const editPassengerForm = ref({
   name: '',
   idType: '身份证',
   idNumber: '',
-  phone: ''
+  phone: '',
+  // 确保 userName 字段正确初始化
+  userName: userName // 从 localStorage 获取的 userName
 });
-
-// 从 localStorage 获取 userName
-const userName = localStorage.getItem('userName');
 
 // 获取乘客信息
 const fetchPassengers = async () => {
@@ -116,9 +121,14 @@ const fetchPassengers = async () => {
     const response = await axios.get('http://localhost:8080/passenger/search', {
       params: { name: userName }
     });
-    passengers.value = response.data.data;
+    if (response.data.code === 200) {
+      passengers.value = response.data.data;
+    } else {
+      alert('获取乘客信息失败: ' + response.data.message);
+    }
   } catch (error) {
     console.error('Failed to fetch passengers:', error);
+    alert('获取乘客信息失败: ' + error.message);
   } finally {
     loading.value = false;
   }
@@ -131,56 +141,79 @@ onMounted(() => {
 // 处理添加按钮点击事件
 const handleAddClick = () => {
   showAddDialog.value = true;
+  // 初始化添加乘客表单数据
   addPassengerForm.value = {
     name: '',
     idType: '身份证',
     idNumber: '',
-    phone: ''
+    phone: '',
+    userName: userName // 从 localStorage 获取的 userName
   };
 };
 
 // 处理编辑按钮点击事件
 const handleEdit = (passenger) => {
   showEditDialog.value = true;
-  editPassengerForm.value = { ...passenger };
+  // 确保 id 以字符串形式传递并初始化编辑乘客表单数据
+  editPassengerForm.value = { 
+    ...passenger, 
+    id: passenger.id.toString(), 
+    userName: userName // 从 localStorage 获取的 userName
+  };
 };
 
 // 添加乘客
 const addPassenger = async () => {
   try {
+    // 在发送请求时包含 userName 字段
     const response = await axios.post('http://localhost:8080/passenger/add', addPassengerForm.value);
-    if (response.data > 0) {
+    if (response.data.code === 200) {
       showAddDialog.value = false;
-      alert('乘客信息添加成功');
+      ElMessage.success('乘客信息添加成功');
       fetchPassengers();
+    } else {
+      ElMessage.error('乘客信息添加失败: ' + response.data.message);
     }
   } catch (error) {
     console.error('Failed to add passenger:', error);
+    ElMessage.error('乘客信息添加失败: ' + error.message);
   }
 };
 
 // 编辑乘客
 const editPassenger = async () => {
   try {
-    const response = await axios.put(`http://localhost:8080/passenger/${editPassengerForm.value.id}`, editPassengerForm.value);
-    if (response.data > 0) {
+    // 在发送请求时包含 userName 字段
+    const response = await axios.post('http://localhost:8080/passenger/update', editPassengerForm.value);
+    if (response.data.code === 200) {
       showEditDialog.value = false;
-      alert('乘客信息编辑成功');
+      ElMessage.success('乘客信息编辑成功');
       fetchPassengers();
+    } else {
+      ElMessage.error('乘客信息编辑失败: ' + response.data.message);
     }
   } catch (error) {
     console.error('Failed to edit passenger:', error);
+    ElMessage.error('乘客信息编辑失败: ' + error.message);
   }
 };
 
 // 删除乘客
 const handleDelete = (id) => {
-  axios.delete(`http://localhost:8080/passenger/${id}`).then(() => {
-    fetchPassengers();
+  // 确保 id 以字符串形式传递
+  axios.post('http://localhost:8080/passenger/delete', [id.toString()]).then(response => {
+    if (response.data.code === 200) {
+      fetchPassengers();
+      ElMessage.success('乘客信息删除成功');
+    } else {
+      ElMessage.error('乘客信息删除失败: ' + response.data.message);
+    }
   }).catch(error => {
     console.error('Failed to delete passenger:', error);
+    ElMessage.error('乘客信息删除失败: ' + error.message);
   });
 };
+
 </script>
 
 <style scoped>

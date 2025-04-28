@@ -11,8 +11,7 @@ const userInfo = ref({
   idNumber: '', // 对应后端的 idCard
   verified: false, // 对应后端的 isVerified
   phone: '',
-  email: '',
-  address: ''
+  email: ''
 })
 
 // 身份证号码脱敏处理
@@ -45,8 +44,7 @@ const loadData = async () => {
       idNumber: response.data.data.idCard || '',
       verified: response.data.data.isVerified === 1, // 将数字 1 转换为布尔值
       phone: response.data.data.phone || '',
-      email: response.data.data.email || '',
-      address: '' // 后端未返回地址，暂时留空
+      email: response.data.data.email || ''
     }
   } catch (error) {
     console.error('Failed to fetch user info:', error)
@@ -91,9 +89,6 @@ onMounted(() => {
       </el-col>
       <el-col :span="8">
         <p><strong>邮箱:</strong> {{ userInfo.email }}</p> <!-- 更新字段名为 email -->
-      </el-col>
-      <el-col :span="8">
-        <p><strong>地址:</strong> {{ userInfo.address }}</p>
       </el-col>
     </el-row>
   </div>

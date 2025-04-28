@@ -35,10 +35,6 @@ const cancelOrder = async (id) => {
   console.log('Cancel order:', id);
 };
 
-const goPayment = async (id) => {
-  // 添加去支付逻辑
-  console.log('Go to payment:', id);
-};
 </script>
 
 <template>
@@ -80,7 +76,6 @@ const goPayment = async (id) => {
       <el-table-column label="操作">
         <template #default="scope">
           <el-button type="danger" @click="cancelOrder(scope.row.id)">取消订单</el-button>
-          <el-button type="primary" @click="goPayment(scope.row.id)">去支付</el-button>
         </template>
       </el-table-column>
     </el-table>
